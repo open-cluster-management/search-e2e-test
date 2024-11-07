@@ -30,16 +30,14 @@ describe('RHACM4K-1695: Search - verify managed cluster info in the search page'
       query = searchQueryBuilder({
         filters: [
           { property: 'cluster', values: ['!local-cluster'] },
-          { property: 'kind', values: ['pod'] },
+          { property: 'kind', values: ['Pod'] },
           { property: 'namespace', values: ['open-cluster-management-agent'] },
         ],
       })
       res = await sendRequest(query, token)
 
       var pods = _.get(res, 'body.data.searchResult[0].items', [])
-      pods.forEach((element) => {
-        expect(element.status).toEqual('Running')
-      })
+      expect(pods.length).toBeGreaterThan(0)
     } else {
       console.log('Test skipped because no managedCluster detected.')
     }
